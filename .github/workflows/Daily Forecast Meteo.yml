@@ -1,0 +1,15 @@
+name: Daily Forecast Meteo - Hourly
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Ogni ora, al minuto 0 (UTC)
+  workflow_dispatch:      # Permette anche l'avvio manuale da GitHub
+
+jobs:
+  call-edge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Edge Function
+        run: |
+          curl -X POST "https://grioxxiuvylyqmakwtex.functions.supabase.co/Retrieve_daily_meteo_forecast" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
