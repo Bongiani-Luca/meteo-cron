@@ -1,0 +1,15 @@
+name: Call Supabase Edge Function Hourly
+
+on:
+  schedule:
+    - cron: '0 * * * *' # ogni ora
+
+jobs:
+  call-edge-function:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Supabase Edge Function
+        run: |
+          curl -X POST https://grioxxiuvylyqmakwtex.functions.supabase.co/Retrieve_daily_meteo_data \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
+
