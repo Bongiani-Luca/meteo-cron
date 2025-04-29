@@ -3,6 +3,7 @@ name: Call Supabase Edge Function Hourly
 on:
   schedule:
     - cron: '0 * * * *' # ogni ora
+  workflow_dispatch:  # Aggiunge il trigger manuale
 
 jobs:
   call-edge-function:
@@ -12,4 +13,5 @@ jobs:
         run: |
           curl -X POST https://grioxxiuvylyqmakwtex.functions.supabase.co/Retrieve_daily_meteo_data \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
+
 
