@@ -2,8 +2,8 @@ name: Generate Signed Profile Picture URLs (Daily)
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # ogni giorno alle 03:00 UTC
-  workflow_dispatch:      # permette anche l'esecuzione manuale
+    - cron: '0 3 * * *'  # Ogni giorno alle 03:00 UTC
+  workflow_dispatch:      # Permette anche l'esecuzione manuale
 
 jobs:
   generate-signed-urls:
@@ -11,14 +11,19 @@ jobs:
     steps:
       - name: Call Supabase Edge Function
         run: |
-          response=$(curl -s -w "%{http_code}" -o output.txt -X POST "${{ secrets.SUPABASE_URL }}/functions/v1/signed_pic_url" \
+          # Chiamata al tuo endpoint Supabase con i secrets di GitHub
+          response=$(curl -v -s -w "%{http_code}" -o output.txt -X POST "${{ secrets.SUPABASE_URL }}/functions/v1/signed_pic_url" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}")
 
+          # Stampa lo status HTTP e la risposta
           echo "HTTP Status: $response"
           echo "Response body:"
           cat output.txt
 
+          # Se il codice di stato non è 200, interrompe l'esecuzione
           if [ "$response" -ne 200 ]; then
+            echo "Request failed with status code $response"
             exit 1
           fi
+
 
