@@ -11,5 +11,14 @@ jobs:
     steps:
       - name: Call Supabase Edge Function
         run: |
-          curl -X POST "${{ secrets.SUPABASE_URL }}/functions/v1/generate_signed_urls_for_users" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
+          response=$(curl -s -w "%{http_code}" -o output.txt -X POST "${{ secrets.SUPABASE_URL }}/functions/v1/signed_pic_url" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}")
+
+          echo "HTTP Status: $response"
+          echo "Response body:"
+          cat output.txt
+
+          if [ "$response" -ne 200 ]; then
+            exit 1
+          fi
+
