@@ -1,0 +1,15 @@
+name: Generate Signed Profile Picture URLs (Daily)
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # ogni giorno alle 03:00 UTC
+  workflow_dispatch:      # permette anche l'esecuzione manuale
+
+jobs:
+  generate-signed-urls:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Supabase Edge Function
+        run: |
+          curl -X POST "${{ secrets.SUPABASE_URL }}/functions/v1/generate_signed_urls_for_users" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
