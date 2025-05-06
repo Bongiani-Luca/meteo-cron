@@ -1,5 +1,5 @@
 name: Generate Signed Profile Picture URLs (Daily)
-On
+on:
   schedule:
     - cron: '0 * * * *' # ogni ora
   workflow_dispatch:      # Permette anche l'esecuzione manuale
